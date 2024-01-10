@@ -1,0 +1,11 @@
+/* src/styles/ImageCard.css */
+.image-card {
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin: 8px;
+  }
+  
+  .image-details {
+    margin-top: 8px;
+  }
+  

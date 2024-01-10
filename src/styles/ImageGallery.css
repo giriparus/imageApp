@@ -1,0 +1,15 @@
+/* src/styles/ImageGallery.css */
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .search-container {
+    margin-bottom: 16px;
+  }
+  
+  .input-search {
+    margin-bottom: 16px;
+  }
+  
