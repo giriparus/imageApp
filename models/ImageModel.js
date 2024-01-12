@@ -1,11 +1,13 @@
 // models/ImageModel.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const imageSchema = new mongoose.Schema({
-  imageUrl: String,
-  imageName: String,
-});
+const imageSchema = new mongoose.Schema(
+  {
+    imageName: String,
+  },
+  { collection: "Images" },
+);
 
-const Image = mongoose.model('Image', imageSchema);
+const ImageModel = mongoose.model("Images", imageSchema);
 
-module.exports = Image;
+module.exports = ImageModel;

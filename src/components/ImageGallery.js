@@ -1,16 +1,15 @@
 // src/components/ImageGallery.js
-import React, { useState, useEffect } from 'react';
-import ImageCard from './ImageCard';
-import '../styles/ImageGallery.css';
+import React, { useState, useEffect } from "react";
+import ImageCard from "./ImageCard";
+import "../styles/ImageGallery.css";
 
 const ImageGallery = () => {
   const [images, setImages] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [filteredImages, setFilteredImages] = useState([]);
 
   useEffect(() => {
-    // For demonstration purposes, assuming a local JSON file with image data
-    fetch('http://localhost:5000/api/image')
+    fetch("http://localhost:5000/api/images")
       .then((response) => response.json())
       .then((data) => setImages(data))
       .catch((error) => console.error(error));
@@ -20,18 +19,36 @@ const ImageGallery = () => {
     // Update filtered images when searchQuery changes
     setFilteredImages(
       images.filter((image) =>
-        image.imageName.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+        image.imageName.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
     );
   }, [searchQuery, images]);
+
+  const handleDelete = (imageName) => {
+    // Make a DELETE request to your backend API to delete the image
+    fetch(`http://localhost:5000/api/images/${imageName}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          // If the delete request is successful, update the state
+          setImages((prevImages) =>
+            prevImages.filter((image) => image.imageName !== imageName),
+          );
+        } else {
+          console.error("Failed to delete image");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  };
 
   const handleSearch = () => {
     // Perform search when the button is clicked
     // You can also add additional logic here if needed
     setFilteredImages(
       images.filter((image) =>
-        image.imageName.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+        image.imageName.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
     );
   };
 
@@ -43,12 +60,19 @@ const ImageGallery = () => {
           placeholder="Search by name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          className="input-search"
         />
-        <button onClick={handleSearch}>Search</button>
       </div>
-      {filteredImages.map((image) => (
-        <ImageCard key={image.id} imageUrl={image.imageUrl} imageName={image.imageName} />
-      ))}
+      <div className="grid-container">
+        {filteredImages.map((image) => (
+          <ImageCard
+            key={image.id}
+            imageUrl={image.imageUrl}
+            imageName={image.imageName}
+            onDelete={handleDelete} // Pass the handleDelete function
+          />
+        ))}
+      </div>
     </div>
   );
 };
